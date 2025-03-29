@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@plugin "daisyui" {
+	themes: corporate --default, business --prefersdark;
+  }
+@plugin "daisyui/theme" {
+	name: "business";
+	prefersdark: true;
+  	color-scheme: "dark";
+	--color-base-100: oklch(0% 0 0);
+	--color-base-200: oklch(19% 0 0);
+	--color-base-300: oklch(22% 0 0);
+	--color-base-content: oklch(87.609% 0 0);
+	--color-primary: oklch(62% 0.214 259.815);
+  	--color-primary-content: oklch(96% 0.018 272.314);
+	--color-secondary: oklch(85% 0.199 91.936);
+	--color-secondary-content: oklch(42% 0.095 57.708);
+	--color-accent: oklch(77% 0.152 181.912);
+	--color-accent-content: oklch(38% 0.063 188.416);
+}
+@plugin "daisyui/theme" {
+	name: "corporate";
+	default: "true";
+  	color-scheme: "light";
+	--color-primary: oklch(62% 0.214 259.815);
+	--color-primary-content: oklch(100% 0 0);
+	--color-secondary: oklch(85% 0.199 91.936);
+	--color-secondary-content: oklch(42% 0.095 57.708);
+	--color-accent: oklch(77% 0.152 181.912);
+	--color-accent-content: oklch(38% 0.063 188.416);
+}
