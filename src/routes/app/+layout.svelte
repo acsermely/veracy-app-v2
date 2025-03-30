@@ -11,16 +11,16 @@
 		<span
 			class="w-full bg-gradient-to-r from-amber-500 via-blue-500 to-teal-500 bg-clip-text pb-3 text-center text-xl font-extrabold text-transparent transition-opacity select-none"
 		>
-			Veracy<span class="text-xs">.app</span>
+			Veracy
 		</span></a
 	>
 	<a href="/app" class="flex items-center gap-3 sm:pl-5">
-		<Home size="28" />
-		<span class="hidden sm:block">Home</span>
+		<Home size={28} />
+		<span class="hidden text-lg sm:block">Home</span>
 	</a>
-	<a href="/app/search" class="flex items-center gap-3 sm:pl-5">
-		<PlusCircle size="28" />
-		<span class="hidden sm:block">New</span>
+	<a href="/create" class="flex items-center gap-3 sm:pl-5">
+		<PlusCircle size={28} />
+		<span class="hidden text-lg sm:block">New</span>
 	</a>
 </nav>
 
