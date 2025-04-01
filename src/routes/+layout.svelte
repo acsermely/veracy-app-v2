@@ -3,10 +3,13 @@
 	import { cubicIn, cubicOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 	import '../app.css';
+	import { setAppState } from '../lib/state/app/app.svelte';
+	import { setState } from '../lib/state/state.svelte';
 
 	let { data, children } = $props();
 
-	$inspect(data.url);
+	setState();
+	setAppState();
 </script>
 
 {#key data.url}
@@ -22,7 +25,7 @@
 		<main
 			in:fly|global={{ y: '-100%', easing: cubicOut, opacity: 0 }}
 			out:fly|global={{ y: '-100%', easing: cubicIn, opacity: 0 }}
-			class="relative h-full w-full"
+			class="h-full w-full"
 		>
 			{@render children()}
 		</main>

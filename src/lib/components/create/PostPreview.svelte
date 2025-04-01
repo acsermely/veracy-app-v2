@@ -5,11 +5,13 @@
 	const {
 		data,
 		age,
-		ref
+		ref,
+		lang
 	}: {
 		data: Partial<PostContent>[];
 		age?: PostAge;
 		ref?: string;
+		lang?: string;
 	} = $props();
 
 	const previewPost = $derived({
@@ -17,7 +19,8 @@
 		content: data,
 		uploader: '0xasd123',
 		age,
-		ref
+		ref,
+		lang
 	} as PostData);
 </script>
 

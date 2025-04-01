@@ -7,8 +7,9 @@ export type PostData = {
 	id: string;
 	content: PostContent[];
 	age: PostAge;
-	ref: string;
 	uploader: string;
+	ref?: string;
+	lang?: string;
 };
 
 export type PostContent = {

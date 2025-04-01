@@ -7,15 +7,16 @@
 		X
 	} from 'lucide-svelte';
 	import { slide } from 'svelte/transition';
-	import { POST_MAX_NUMBER_OF_CONTENT, URL_REGEX } from '../../constants';
+	import { LANGUAGES, POST_MAX_NUMBER_OF_CONTENT, URL_REGEX } from '../../constants';
 	import type { PostAge, PostContent, PostContentAlign } from '../../models/post.model';
 	import { runDelayed } from '../../utils/common.utils';
 
 	let {
 		data = $bindable(),
 		age = $bindable(),
-		ref = $bindable()
-	}: { data: Partial<PostContent>[]; age?: PostAge; ref?: string } = $props();
+		ref = $bindable(),
+		lang = $bindable()
+	}: { data: Partial<PostContent>[]; age?: PostAge; ref?: string; lang?: string } = $props();
 
 	let linkValid = $derived(ref ? !!ref.match(URL_REGEX) : true);
 
@@ -176,21 +177,34 @@
 		</button>
 	</div>
 	<div class="flex flex-col gap-3">
-		<select bind:value={age} class="select w-1/2 min-w-fit border-2" name="age" id="age">
-			<option disabled selected>- Select Age Rating -</option>
-			<option>+12</option>
-			<option>+16</option>
-			<option>+18</option>
-		</select>
-		<input
-			bind:value={ref}
-			class="input w-full border-2"
-			class:input-error={!linkValid}
-			type="text"
-			placeholder="Referr to a link"
-		/>
+		<div class="flex w-full gap-3">
+			<select bind:value={age} class="select" name="age" id="age">
+				<option disabled selected value="">- Select Age Rating -</option>
+				<option value="+12">+12</option>
+				<option value="+16">+16</option>
+				<option value="+18">+18</option>
+			</select>
+
+			<select bind:value={lang} class="select" name="lang" id="lang">
+				<option disabled selected value="">- Select Language -</option>
+				{#each LANGUAGES as language}
+					<option value={language}>{language}</option>
+				{/each}
+			</select>
+		</div>
+
+		<label class="input w-full border-2">
+			<input
+				bind:value={ref}
+				class:input-error={!linkValid}
+				type="text"
+				placeholder="Referr to a link"
+			/>
+		</label>
 		{#if !linkValid}
-			<p transition:slide={{ axis: 'y' }} class="fieldset-label text-xs">Invalid Link</p>
+			<p transition:slide={{ axis: 'y' }} class="fieldset-label text-warning text-xs">
+				Invalid Link
+			</p>
 		{/if}
 	</div>
 </div>

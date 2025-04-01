@@ -1,12 +1,33 @@
 <script lang="ts">
 	import { ChevronLeft, ChevronRight, Circle } from 'lucide-svelte';
 	import Link_2 from 'lucide-svelte/icons/link-2';
+	import { onMount } from 'svelte';
+	import { SvelteMap } from 'svelte/reactivity';
 	import type { PostData } from '../../models/post.model';
+	import { getState } from '../../state/state.svelte';
+	import { NodeUtils } from '../../utils/node.utils';
 
-	const { data }: { data: PostData } = $props();
+	const { data, txId }: { data: PostData; txId?: string } = $props();
+
+	const globalState = getState();
+
+	onMount(() => {
+		if (!txId) {
+			return;
+		}
+		for (const content of data.content) {
+			if (content.type !== 'IMG') {
+				content;
+			}
+			NodeUtils.getImages(globalState.nodeUrl, content.data, txId).then((imgData) => {
+				images.set(content.data, imgData);
+			});
+		}
+	});
 
 	let currentPage = $state(0);
 	let hashValid = $state<boolean[]>(data.content.map(() => true));
+	let images = new SvelteMap<string, string | undefined>();
 
 	function scrollToContent(i: number): void {
 		return document.getElementById(data.id + '_' + i)?.scrollIntoView({
@@ -29,13 +50,13 @@
 <div class="w-full max-w-[450px]">
 	<div class="border-base-content/30 relative flex border-y-0 p-0">
 		<div
-			class="absolute -left-3 z-10 flex h-full items-center p-1 opacity-80"
+			class="absolute -left-2 z-10 flex h-full items-center p-1 opacity-80"
 			class:hidden={currentPage === 0}
 		>
 			<ChevronLeft class="h-full cursor-pointer" onclick={() => scrollToContent(currentPage - 1)} />
 		</div>
 		<div
-			class="absolute -right-3 z-10 flex h-full items-center p-1 opacity-80"
+			class="absolute -right-2 z-10 flex h-full items-center p-1 opacity-80"
 			class:hidden={currentPage === data.content.length - 1}
 		>
 			<ChevronRight
@@ -61,8 +82,18 @@
 							class:text-left={content.align === 'left'}
 							class:text-center={content.align === 'center'}
 							class:text-right={content.align === 'right'}>{content.data.trim()}</pre>
+					{:else if content.type === 'IMG'}
+						{#if images.has(content.data)}
+							<img
+								class="h-full object-contain"
+								src={images.get(content.data)}
+								alt={'image_' + i}
+							/>
+						{:else}
+							???
+						{/if}
 					{:else}
-						<img class="h-full object-contain" src={content.data} alt={'image_' + i} />
+						??
 					{/if}
 				</div>
 			{/each}

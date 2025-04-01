@@ -1,4 +1,4 @@
-import type { PostContent } from "../models/post.model";
+import type { PostContent } from '../models/post.model';
 
 export function runDelayed(fn: () => void, ms: number = 1): void {
 	const timeout = setTimeout(() => {
@@ -9,22 +9,22 @@ export function runDelayed(fn: () => void, ms: number = 1): void {
 
 export function hasPrivateContent(data: Partial<PostContent>[]): boolean {
 	return !!data.filter((content) => {
-		return content?.privacy === "PRIVATE";
+		return content?.privacy === 'PRIVATE';
 	}).length;
 }
 
 export function downloadFile(
 	name: string,
 	content: any,
-	type: "text/plain" | "application/json",
+	type: 'text/plain' | 'application/json'
 ): void {
-	const a = document.createElement("a");
+	const a = document.createElement('a');
 	a.href = URL.createObjectURL(
 		new Blob([content], {
-			type,
-		}),
+			type
+		})
 	);
-	a.setAttribute("download", name);
+	a.setAttribute('download', name);
 	document.body.appendChild(a);
 	a.click();
 	document.body.removeChild(a);
@@ -33,11 +33,9 @@ export function downloadFile(
 export async function createSHA256Hash(data: string): Promise<string> {
 	const encoder = new TextEncoder();
 	const dataArray = encoder.encode(data);
-	const hashBuffer = await crypto.subtle.digest("SHA-256", dataArray);
+	const hashBuffer = await crypto.subtle.digest('SHA-256', dataArray);
 	const hashArray = Array.from(new Uint8Array(hashBuffer));
-	const hashHex = hashArray
-		.map((byte) => byte.toString(16).padStart(2, "0"))
-		.join("");
+	const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
 	return hashHex;
 }
 
@@ -62,4 +60,9 @@ export function debounce(func: (...args: string[]) => void, wait = 0) {
 	};
 
 	return debounced;
+}
+
+export function formatWallet(wallet: string, chunk: number = 4): string {
+	const last = wallet.length - 1;
+	return `${wallet.slice(0, chunk)}...${wallet.slice(-chunk, -1)}`;
 }
